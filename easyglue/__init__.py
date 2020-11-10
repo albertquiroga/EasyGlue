@@ -96,7 +96,7 @@ class EasyDynamicFrameReader:
                                                                    kwargs=kwargs)
 
     def format_option(self, key: str, value: str):
-        self.format_options_dict += {key: value}
+        self.format_options_dict.update({key: value})
         return self
 
     def format_options(self, options: dict):
@@ -104,7 +104,7 @@ class EasyDynamicFrameReader:
         return self
 
     def connection_option(self, key: str, value: str):
-        self.connection_options_dict += {key: value}
+        self.format_options_dict.update({key: value})
         return self
 
     def connection_options(self, options: dict):
@@ -112,7 +112,7 @@ class EasyDynamicFrameReader:
         return self
 
     def additional_option(self, key: str, value: str):
-        self.additional_options_dict += {key: value}
+        self.format_options_dict.update({key: value})
         return self
 
     def additional_options(self, options: dict):
