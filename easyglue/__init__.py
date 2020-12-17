@@ -2,6 +2,7 @@ import sys
 from typing import Any, Union
 from urllib.parse import urlparse
 
+import boto3
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
@@ -15,6 +16,7 @@ setattr(GlueContext, 'read', read)
 
 class EasyDynamicFrameReader:
 
+    glue_client = boto3.client('glue')
     connection_options_dict = {}
     format_options_dict = {}
     additional_options_dict = {}
@@ -99,6 +101,33 @@ class EasyDynamicFrameReader:
                                                                    additional_options=self.additional_options_dict,
                                                                    catalog_id=catalog_id,
                                                                    kwargs=kwargs)
+
+    def jdbc(self, dbtable: str, url: str, user: str, password: str,
+             redshift_tmp_dir: str = "", custom_jdbc_driver_s3_path: str = "", custom_jdbc_driver_class_name: str = "",
+             database_type: str = "", transformation_ctx: str = "", push_down_predicate: str = ""):
+
+        self.connection_options({
+            'url': url,
+            'dbtable': dbtable,
+            'redshiftTmpDir': redshift_tmp_dir,
+            'user': user,
+            'password': password,
+        })
+
+        if custom_jdbc_driver_s3_path and custom_jdbc_driver_class_name:
+            self.connection_options({
+                'customJdbcDriverS3Path': custom_jdbc_driver_s3_path,
+                'customJdbcDriverClassName': custom_jdbc_driver_class_name
+            })
+
+        db_type = database_type if database_type else url.split(':')[1]
+
+        return self.glue_context.create_dynamic_frame.from_options(connection_type=db_type,
+                                                                   connection_options=self.connection_options_dict,
+                                                                   transformation_ctx=transformation_ctx,
+                                                                   push_down_predicate=push_down_predicate)
+
+
 
     def format_option(self, key: str, value: str):
         self.format_options_dict.update({key: value})
