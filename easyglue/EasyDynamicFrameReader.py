@@ -157,7 +157,7 @@ class EasyDynamicFrameReader:
                                                      f'{type(s3_paths)} was provided instead')
                 sys.exit(1)
 
-        return self.glue_context.create_dynamic_frame.from_options(connection_type='s3',
+        return self.glue_context.create_dynamic_frame_from_options(connection_type='s3',
                                                                    connection_options=self.connection_options_dict,
                                                                    format=data_format,
                                                                    format_options=self.format_options_dict,
@@ -179,7 +179,7 @@ class EasyDynamicFrameReader:
         :param kwargs: Keyword arguments
         :return: DynamicFrame representing the Data Catalog table
         """
-        return self.glue_context.create_dynamic_frame.from_catalog(database=database_name,
+        return self.glue_context.create_dynamic_frame_from_catalog(database=database_name,
                                                                    table_name=table_name,
                                                                    redshift_tmp_dir=redshift_tmp_dir,
                                                                    transformation_ctx=transformation_ctx,
@@ -187,6 +187,20 @@ class EasyDynamicFrameReader:
                                                                    additional_options=self.additional_options_dict,
                                                                    catalog_id=catalog_id,
                                                                    kwargs=kwargs)
+
+    def rdd(self, rdd, name: str, schema=None, sample_ratio=None) -> DynamicFrame:
+        """
+        Reads a dataset from an RDD object
+        :param rdd: RDD object to read from
+        :param name: Name to be given to the resulting DynamicFrame
+        :param schema: (Optional) Schema to be applied to the resulting DynamicFrame
+        :param sample_ratio: (Optional) Sampling ratio to apply when reading from the RDD
+        :return: DynamicFrame object representing the RDD
+        """
+        return self.glue_context.create_dynamic_frame_from_rdd(data=rdd,
+                                                               name=name,
+                                                               schema=schema,
+                                                               sample_ratio=sample_ratio)
 
     def jdbc(self, dbtable: str, url: str, user: str, password: str,
              redshift_tmp_dir: str = "", custom_jdbc_driver_s3_path: str = "", custom_jdbc_driver_class_name: str = "",
