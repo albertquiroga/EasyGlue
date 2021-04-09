@@ -16,8 +16,8 @@ class EasyDynamicFrameReader:
         self.glue_context = glue_context
 
     from easyglue.reader._s3 import csv, json, avro, ion, groklog, orc, parquet, glueparquet, xml
+    from easyglue.reader._catalog import catalog, table
     from easyglue.reader._jdbc import jdbc
-    from easyglue.reader._catalog import catalog
     from easyglue.reader._rdd import rdd
 
     def format_option(self, key: str, value: str):

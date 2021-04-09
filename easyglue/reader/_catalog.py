@@ -1,6 +1,11 @@
 from typing import Any
+import re
+import sys
 
 from awsglue.dynamicframe import DynamicFrame
+
+QUALIFIED_NAME_MATCH_REGEX = "[a-zA-Z]+\\.[a-zA-Z]+"
+QUALIFIED_NAME_MATCH_CAPTURE = "[a-zA-Z]+"
 
 
 def catalog(self, database_name: str, table_name: str, redshift_tmp_dir: str = "", transformation_ctx: str = "",
@@ -25,3 +30,42 @@ def catalog(self, database_name: str, table_name: str, redshift_tmp_dir: str = "
                                                                additional_options=self.additional_options_dict,
                                                                catalog_id=catalog_id,
                                                                kwargs=kwargs)
+
+
+def table(self, qualified_name: str, redshift_tmp_dir: str = "", transformation_ctx: str = "",
+          push_down_predicate: str = "", catalog_id: int = None, **kwargs: Any) -> DynamicFrame:
+    """
+    Reads a dataset from a Data Catalog qualified table name with the right configuration
+    :param self: Self reference to the EasyDynamicFrameReader class
+    :param qualified_name: Qualified name (database.table) of the table to read from
+    :param redshift_tmp_dir: Temporary path to be used when reading/writing from/to Redshift
+    :param transformation_ctx: Glue transformation context
+    :param push_down_predicate: S3 push down predicate to be applied
+    :param catalog_id: Data Catalog ID containing the referenced database and table names
+    :param kwargs: Keyword arguments
+    :return: DynamicFrame representing the Data Catalog table
+    """
+    database_name, table_name = _validate_qualified_name(self, qualified_name)
+    return self.glue_context.create_dynamic_frame_from_catalog(database=database_name,
+                                                               table_name=table_name,
+                                                               redshift_tmp_dir=redshift_tmp_dir,
+                                                               transformation_ctx=transformation_ctx,
+                                                               push_down_predicate=push_down_predicate,
+                                                               additional_options=self.additional_options_dict,
+                                                               catalog_id=catalog_id,
+                                                               kwargs=kwargs)
+
+
+def _validate_qualified_name(self, qualified_name: str):
+    """
+    Validates that the provided qualified name is in the form of "database.table" and if so, returns each part
+    :param self: Self reference to the EasyDynamicFrameReader class
+    :param qualified_name: Qualified name of the table
+    :return: Database name, table name
+    """
+    if not re.match(QUALIFIED_NAME_MATCH_REGEX, qualified_name):
+        self.glue_context.get_logger().error('Provided table name is not in the form of "database.table"')
+        sys.exit(1)
+    else:
+        matches = re.findall(QUALIFIED_NAME_MATCH_CAPTURE, qualified_name)
+        return matches[0], matches[1]
