@@ -1,6 +1,8 @@
 clean:
-	@echo "Removing dist directory"
+	@echo "Cleaning build directories"
 	rm -rf dist/
+	rm -rf build/
+	rm -rf easyglue.egg-info/
 
 test: clean
 	@echo "Building project"
