@@ -1,4 +1,4 @@
-from easyglue.EasyDynamicFrameReader import EasyDynamicFrameReader
+from easyglue.reader import EasyDynamicFrameReader
 
 from awsglue.context import GlueContext
 
