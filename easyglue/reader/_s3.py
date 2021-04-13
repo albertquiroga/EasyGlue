@@ -1,4 +1,3 @@
-import sys
 from typing import Any, Union
 
 from awsglue.dynamicframe import DynamicFrame
@@ -15,7 +14,7 @@ def _read_from_s3(self, data_format: str, s3_paths: Union[str, list] = "", trans
     :param kwargs: Keyword arguments
     :return: DynamicFrame representing the dataset
     """
-    _process_s3_path(self, s3_paths)
+    self.connection_options_dict['paths'] = _process_s3_path(self, s3_paths)
 
     return self.glue_context.create_dynamic_frame_from_options(connection_type='s3',
                                                                connection_options=self.connection_options_dict,
@@ -27,25 +26,22 @@ def _read_from_s3(self, data_format: str, s3_paths: Union[str, list] = "", trans
                                                                )
 
 
-def _process_s3_path(self, s3_paths):
+def _process_s3_path(self, s3_paths) -> list:
     """
     Handles the fact that s3 path can be a single string or an array of strings, also does parameter validation
     :param self: Self reference to the EasyDynamicFrameReader class
     :param s3_paths: String or list of strings containing the s3 location(s) to read from
-    :return: None
+    :return: List of strings
     """
     if s3_paths:
         if isinstance(s3_paths, str):
-            self.connection_options_dict['paths'] = [s3_paths]
+            return [s3_paths]
         elif isinstance(s3_paths, list):
-            self.connection_options_dict['paths'] = s3_paths
+            return s3_paths
         else:
-            self.glue_context.get_logger().error(f'Attribute "s3_paths" must be either str or list, '
-                                                 f'{type(s3_paths)} was provided instead')
-            sys.exit(1)
+            raise TypeError(f'Attribute "s3_paths" must be either str or list, {type(s3_paths)} was provided instead')
     else:
-        self.glue_context.get_logger().error(f'No S3 path was specified')
-        sys.exit(1)
+        raise ValueError(f'Attribute "s3_paths" is empty')
 
 
 def csv(self, s3_paths, transformation_ctx: str = "", push_down_predicate: str = "",
@@ -164,7 +160,7 @@ def glueparquet(self, s3_paths, transformation_ctx: str = "", push_down_predicat
     :param kwargs: Keyword arguments
     :return: DynamicFrame representing the dataset
     """
-    return _read_from_s3(self, data_format='glueparquet', s3_paths=s3_paths, transformation_ctx=transformation_ctx,
+    return _read_from_s3(self, data_format='parquet', s3_paths=s3_paths, transformation_ctx=transformation_ctx,
                          push_down_predicate=push_down_predicate, kwargs=kwargs)
 
 
