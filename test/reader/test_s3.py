@@ -7,6 +7,7 @@ from awsglue.context import GlueContext
 
 
 class TestS3Read(unittest.TestCase):
+
     glue = GlueContext(SparkContext.getOrCreate())
 
     def test_process_s3_path(self):

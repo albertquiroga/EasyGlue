@@ -1,11 +1,10 @@
 from typing import Any
 import re
-import sys
 
 from awsglue.dynamicframe import DynamicFrame
 
-QUALIFIED_NAME_MATCH_REGEX = "[a-zA-Z]+\\.[a-zA-Z]+"
-QUALIFIED_NAME_MATCH_CAPTURE = "[a-zA-Z]+"
+QUALIFIED_NAME_MATCH_REGEX = "[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]+"
+QUALIFIED_NAME_MATCH_CAPTURE = "[a-zA-Z0-9_]+"
 
 
 def catalog(self, database_name: str, table_name: str, redshift_tmp_dir: str = "", transformation_ctx: str = "",
@@ -56,7 +55,7 @@ def table(self, qualified_name: str, redshift_tmp_dir: str = "", transformation_
                                                                kwargs=kwargs)
 
 
-def _validate_qualified_name(self, qualified_name: str):
+def _validate_qualified_name(self, qualified_name: str) -> tuple:
     """
     Validates that the provided qualified name is in the form of "database.table" and if so, returns each part
     :param self: Self reference to the EasyDynamicFrameReader class
@@ -64,8 +63,7 @@ def _validate_qualified_name(self, qualified_name: str):
     :return: Database name, table name
     """
     if not re.match(QUALIFIED_NAME_MATCH_REGEX, qualified_name):
-        self.glue_context.get_logger().error('Provided table name is not in the form of "database.table"')
-        sys.exit(1)
+        raise ValueError('Provided table name is not in the form of "database.table"')
     else:
         matches = re.findall(QUALIFIED_NAME_MATCH_CAPTURE, qualified_name)
         return matches[0], matches[1]
