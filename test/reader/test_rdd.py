@@ -16,8 +16,8 @@ class TestRDDRead(unittest.TestCase):
         data = [["Mark,", 1], ["Anne", 2], ["Carlos", 3], ["Ghada", 4], ["Mikhail", 5]]
         rdd = self.sc.parallelize(data)
 
-        schemaString = "name id"
-        fields = [StructField(field_name, StringType(), True) for field_name in schemaString.split()]
+        schema_string = "name id"
+        fields = [StructField(field_name, StringType(), True) for field_name in schema_string.split()]
         schema = StructType(fields)
 
         dyf = self.glue.read().rdd(rdd, "test_rdd", schema)
