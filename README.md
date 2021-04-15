@@ -4,7 +4,7 @@ This project aims to make the usage of AWS Glue's DynamicFrame more similar to t
 
 DataFrame S3 read:
 ```
-spark.read().csv('s3://test_path/', header=True)
+spark.read().json('s3://test_path/')
 ```
 
 DynamicFrame S3 read:
@@ -46,6 +46,6 @@ If you prefer to build from source and pass the module as a wheel file, do the f
 
 ## Roadmap
 
-* Reading from JDBC sources
 * Writes
-* Turn format/connection options into method arguments for even more similar and compact method calls
+* Automatic transformation_ctx handling
+* Scala support
