@@ -1,6 +1,6 @@
 # EasyGlue
 
-This project aims to make the usage of AWS Glue's DynamicFrame more similar to that of Apache Spark's DataFrame, so that it's easier for newcomers to Glue to use the API. Let's take a simple S3 read of a CSV dataset with headers for instance:
+This project aims to make the usage of AWS Glue's DynamicFrame more similar to that of Apache Spark's DataFrame, so that it's easier for newcomers to Glue to use the API. Let's take a simple S3 read of a JSON dataset for instance:
 
 DataFrame S3 read:
 ```
