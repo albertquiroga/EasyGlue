@@ -9,24 +9,35 @@ spark.read().csv('s3://test_path/', header=True)
 
 DynamicFrame S3 read:
 ```
-glue.create_dynamic_frame.from_options(connection_type='s3', connection_options={'paths': ['s3://test_path/']}, format='csv', format_options={'withHeader': True}, transformation_ctx='datasource0')
+glue.create_dynamic_frame.from_options(connection_type='s3', connection_options={'paths': ['s3://test_path/']}, format='json', transformation_ctx='datasource0')
 ```
 
 As you can see, the syntax here is quite different. With EasyGlue, you can turn the DynamicFrame read operation into something way more similar:
 ```
-glue.read().format_option('withHeader', True).csv('s3://test_path/')
+glue.read().json('s3://test_path/')
 ```
 
-## Currently supported options
+## Currently-supported options
 
 The project currently supports:
 
 * Reading from S3 in any of the supported formats
 * Read from Data Catalog tables
+* Read from JDBC sources
+* Read from RDD
 
 ## Usage
 
-To use EasyGlue in your projects, do the following:
+To use EasyGlue in your projects, simply add the following properties to your job:
+
+```
+key: --additional-python-modules
+value: easyglue
+```
+
+Then add a `import easyglue` at the beginning of your job's code. That's it.
+
+If you prefer to build from source and pass the module as a wheel file, do the following:
 
 1. Download the source code: `git clone https://github.com/albertquiroga/EasyGlue.git`
 2. Go into the project's directory, and build it into a wheel file: `python setup.py build bdist_wheel`
