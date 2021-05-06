@@ -19,6 +19,7 @@ class EasyDynamicFrameReader:
     from easyglue.reader._catalog import catalog, table
     from easyglue.reader._jdbc import jdbc
     from easyglue.reader._rdd import rdd
+    from easyglue.reader._others import dynamodb, ddb
 
     def format_option(self, key: str, value: str):
         """
