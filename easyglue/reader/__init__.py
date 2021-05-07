@@ -1,8 +1,13 @@
 from awsglue.context import GlueContext
 
+from easyglue.reader._CatalogMixin import CatalogMixin
+from easyglue.reader._JDBCMixin import JDBCMixin
+from easyglue.reader._OthersMixin import OthersMixin
+from easyglue.reader._RDDMixin import RDDMixin
+from easyglue.reader._S3Mixin import S3Mixin
 
-class EasyDynamicFrameReader:
 
+class EasyDynamicFrameReader(CatalogMixin, JDBCMixin, OthersMixin, RDDMixin, S3Mixin):
     connection_options_dict = {}
     format_options_dict = {}
     additional_options_dict = {}
@@ -14,12 +19,6 @@ class EasyDynamicFrameReader:
         :param glue_context: GlueContext object
         """
         self.glue_context = glue_context
-
-    from easyglue.reader._s3 import csv, json, avro, ion, groklog, orc, parquet, glueparquet, xml
-    from easyglue.reader._catalog import catalog, table
-    from easyglue.reader._jdbc import jdbc
-    from easyglue.reader._rdd import rdd
-    from easyglue.reader._others import dynamodb, ddb
 
     def format_option(self, key: str, value: str):
         """

@@ -11,17 +11,17 @@ class TestS3Read(unittest.TestCase):
     glue = GlueContext(SparkContext.getOrCreate())
 
     def test_process_s3_path(self):
-        from easyglue.reader._s3 import _process_s3_path
-        result = _process_s3_path(self, 's3://test')
+        from easyglue.reader._S3Mixin import _process_s3_path
+        result = _process_s3_path('s3://test')
         self.assertTrue(isinstance(result, list))
 
     def test_process_s3_path_incorrect(self):
-        from easyglue.reader._s3 import _process_s3_path
-        self.assertRaises(TypeError, _process_s3_path, self, 1)
+        from easyglue.reader._S3Mixin import _process_s3_path
+        self.assertRaises(TypeError, _process_s3_path, 1)
 
     def test_process_s3_path_empty(self):
-        from easyglue.reader._s3 import _process_s3_path
-        self.assertRaises(ValueError, _process_s3_path, self, '')
+        from easyglue.reader._S3Mixin import _process_s3_path
+        self.assertRaises(ValueError, _process_s3_path, '')
 
     def test_csv(self):
         data = self.glue.read().csv("s3://bertolb/sampledata/mockaroo/csv/")
