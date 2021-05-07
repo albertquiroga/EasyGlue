@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="easyglue",
-    version="0.0.6",
+    version="0.0.7",
     author="Albert Quiroga",
     author_email="albertquirogabertolin@gmail.com",
     description="Glue DynamicFrame syntax closer to DataFrames",
