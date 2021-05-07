@@ -3,6 +3,8 @@ from typing import Any, Union
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
+from easyglue.utils import reader_method
+
 
 def _process_s3_path(s3_paths) -> list:
     """
@@ -29,6 +31,7 @@ class S3Mixin:
     additional_options_dict: dict
     data_format: str
 
+    @reader_method
     def _read_from_s3(self, data_format: str, s3_paths: Union[str, list] = "", transformation_ctx: str = "",
                       push_down_predicate: str = "", **kwargs: Any) -> DynamicFrame:
         """

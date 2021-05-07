@@ -1,10 +1,13 @@
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
+from easyglue.utils import reader_method
+
 
 class RDDMixin:
     glue_context: GlueContext
 
+    @reader_method
     def rdd(self, source_rdd, name: str, schema=None, sample_ratio=None) -> DynamicFrame:
         """
         Reads a dataset from an RDD object

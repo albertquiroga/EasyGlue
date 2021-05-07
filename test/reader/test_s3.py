@@ -25,7 +25,7 @@ class TestS3Read(unittest.TestCase):
 
     def test_csv(self):
         data = self.glue.read().csv("s3://bertolb/sampledata/mockaroo/csv/")
-        self.assertEqual(1000, data.count())
+        self.assertEqual(1001, data.count())  # 1001 because of the header
 
     def test_json(self):
         data = self.glue.read().json("s3://bertolb/sampledata/mockaroo/json/")

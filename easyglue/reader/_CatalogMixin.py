@@ -4,6 +4,8 @@ import re
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
+from easyglue.utils import reader_method
+
 QUALIFIED_NAME_MATCH_REGEX = "[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]+"
 QUALIFIED_NAME_MATCH_CAPTURE = "[a-zA-Z0-9_]+"
 
@@ -25,6 +27,7 @@ class CatalogMixin:
     glue_context: GlueContext
     additional_options_dict: dict
 
+    @reader_method
     def catalog(self, database_name: str, table_name: str, redshift_tmp_dir: str = "", transformation_ctx: str = "",
                 push_down_predicate: str = "", catalog_id: int = None, **kwargs: Any) -> DynamicFrame:
         """
@@ -48,6 +51,7 @@ class CatalogMixin:
                                                                    catalog_id=catalog_id,
                                                                    kwargs=kwargs)
 
+    @reader_method
     def table(self, qualified_name: str, redshift_tmp_dir: str = "", transformation_ctx: str = "",
               push_down_predicate: str = "", catalog_id: int = None, **kwargs: Any) -> DynamicFrame:
         """

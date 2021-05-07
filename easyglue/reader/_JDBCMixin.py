@@ -2,12 +2,15 @@ from typing import Callable
 
 from awsglue.context import GlueContext
 
+from easyglue.utils import reader_method
+
 
 class JDBCMixin:
     glue_context: GlueContext
     connection_options_dict: dict
     connection_options: Callable
 
+    @reader_method
     def jdbc(self, dbtable: str, url: str, user: str, password: str,
              redshift_tmp_dir: str = "", custom_jdbc_driver_s3_path: str = "", custom_jdbc_driver_class_name: str = "",
              database_type: str = "", transformation_ctx: str = "", push_down_predicate: str = ""):
