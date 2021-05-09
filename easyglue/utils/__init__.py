@@ -14,3 +14,13 @@ def reader_method(func):
         return result
 
     return wrapper
+
+
+def writer_method(func):
+    def wrapper(self, *args, **kwargs):
+        result = func(self, *args, **kwargs)
+        self.connection_options_dict.clear()
+        self.format_options_dict.clear()
+        return result
+
+    return wrapper
