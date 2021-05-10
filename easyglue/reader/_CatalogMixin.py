@@ -1,26 +1,9 @@
 from typing import Any
-import re
 
 from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
-from easyglue.utils import reader_method
-
-QUALIFIED_NAME_MATCH_REGEX = "[a-zA-Z0-9_]+\\.[a-zA-Z0-9_]+"
-QUALIFIED_NAME_MATCH_CAPTURE = "[a-zA-Z0-9_]+"
-
-
-def _validate_qualified_name(qualified_name: str) -> tuple:
-    """
-    Validates that the provided qualified name is in the form of "database.table" and if so, returns each part
-    :param qualified_name: Qualified name of the table
-    :return: Database name, table name
-    """
-    if not re.match(QUALIFIED_NAME_MATCH_REGEX, qualified_name):
-        raise ValueError('Provided table name is not in the form of "database.table"')
-    else:
-        matches = re.findall(QUALIFIED_NAME_MATCH_CAPTURE, qualified_name)
-        return matches[0], matches[1]
+from easyglue.utils import reader_method, validate_qualified_name
 
 
 class CatalogMixin:
@@ -65,7 +48,7 @@ class CatalogMixin:
         :param kwargs: Keyword arguments
         :return: DynamicFrame representing the Data Catalog table
         """
-        database_name, table_name = _validate_qualified_name(qualified_name)
+        database_name, table_name = validate_qualified_name(qualified_name)
         return self.glue_context.create_dynamic_frame_from_catalog(database=database_name,
                                                                    table_name=table_name,
                                                                    redshift_tmp_dir=redshift_tmp_dir,

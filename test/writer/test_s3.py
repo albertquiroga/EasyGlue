@@ -1,9 +1,15 @@
 import unittest
 
+from awsglue.context import GlueContext
+from awsglue.dynamicframe import DynamicFrame
+
+import easyglue
 from test.writer import WriterTest
 
 
 class TestS3Read(WriterTest):
+    _glue: GlueContext
+    dataset: DynamicFrame
 
     def test_no_params(self):
         self.assertRaises(ValueError, self.dataset.write().csv, "")

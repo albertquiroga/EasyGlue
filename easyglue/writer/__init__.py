@@ -2,12 +2,14 @@ from awsglue.context import GlueContext
 from awsglue.dynamicframe import DynamicFrame
 
 from easyglue.writer._S3Mixin import S3Mixin
+from easyglue.writer._CatalogMixin import CatalogMixin
 
 
-class EasyDynamicFrameWriter(S3Mixin):
+class EasyDynamicFrameWriter(S3Mixin, CatalogMixin):
     data_format = ""  # TODO implement this, with a save() method
     connection_options_dict = {}
     format_options_dict = {}
+    additional_options_dict = {}
 
     def __init__(self, glue_context: GlueContext, dynamicframe: DynamicFrame):
         self.glue = glue_context
@@ -49,6 +51,25 @@ class EasyDynamicFrameWriter(S3Mixin):
         :return: None
         """
         self.connection_options_dict = options
+        return self
+
+    def additional_option(self, key: str, value: str):
+        """
+        Stores an additional option for later use when reading
+        :param key: Additional option key
+        :param value: Additional option value
+        :return: None
+        """
+        self.additional_options_dict.update({key: value})
+        return self
+
+    def additional_options(self, options: dict):
+        """
+        Stores a dictionary of additional options for later use when reading
+        :param options: Additional options dictionary
+        :return: None
+        """
+        self.additional_options_dict = options
         return self
 
     def option(self, key: str, value: str):

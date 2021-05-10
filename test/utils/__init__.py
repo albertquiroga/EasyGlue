@@ -1,37 +1,18 @@
-import boto3
-
-s3 = boto3.client('s3')
+import unittest
 
 
-def delete_all_s3_objects(bucket: str, prefix: str):
-    """
-    Deletes all s3 objects in the given bucket and prefix
-    :param bucket: S3 bucket
-    :param prefix: S3 prefix
-    :return: None
-    """
-    objects = list_all_objects(bucket, prefix)
-    if objects:
-        mapped_objects = list(map(lambda o: {'Key': o}, objects))
-        s3.delete_objects(Bucket="bertolb", Delete={'Objects': mapped_objects})
+class TestUtils(unittest.TestCase):
+
+    def test_validate_qualified_name(self):
+        from easyglue.utils import validate_qualified_name
+        database, table = validate_qualified_name("default.legislators")
+        self.assertEqual("default", database)
+        self.assertEqual("legislators", table)
+
+    def test_validate_qualified_name_error(self):
+        from easyglue.utils import validate_qualified_name
+        self.assertRaises(ValueError, validate_qualified_name, "legislators")
 
 
-def list_all_objects(bucket_name: str, prefix: str) -> list:
-    """
-    Lists all s3 objects in the given bucket and prefix
-    :param bucket_name: S3 bucket
-    :param prefix: S3 prefix
-    :return: List of object keys
-    """
-    kwargs = {'Bucket': bucket_name, 'Prefix': prefix}
-    object_list = []
-
-    while True:
-        resp = s3.list_objects_v2(**kwargs)
-        object_list += list(map(lambda x: x.get('Key', ''), resp.get('Contents', [])))
-        try:
-            kwargs['ContinuationToken'] = resp['NextContinuationToken']
-        except KeyError:
-            break
-
-    return object_list
+if __name__ == '__main__':
+    unittest.main()

@@ -1,6 +1,9 @@
-from test.writer import WriterTest
+from awsglue.context import GlueContext
+from awsglue.dynamicframe import DynamicFrame
 
-from test.utils import list_all_objects
+import easyglue
+from test.writer import WriterTest
+from test.test_utils import list_all_objects
 
 
 def check_if_compressed(bucket: str, prefix: str) -> bool:
@@ -10,6 +13,8 @@ def check_if_compressed(bucket: str, prefix: str) -> bool:
 
 
 class TestEasyDynamicFrameWriter(WriterTest):
+    glue: GlueContext
+    dataset: DynamicFrame
 
     def test_format_option(self):
         output_path = "s3://bertolb/test/easyglue/outputs/format_option/"
@@ -35,10 +40,12 @@ class TestEasyDynamicFrameWriter(WriterTest):
         output_path = "s3://bertolb/test/easyglue/outputs/connection_option/"
         self.dataset.write().connection_option("compression", "gzip").json(output_path)
         compressed = check_if_compressed("bertolb", "test/easyglue/outputs/connection_option/")
-        self.assertEqual(compressed, True)
+        self.assertTrue(compressed)
 
     def test_connection_options(self):
         output_path = "s3://bertolb/test/easyglue/outputs/connection_options/"
         self.dataset.write().connection_options({"compression": "gzip"}).json(output_path)
         compressed = check_if_compressed("bertolb", "test/easyglue/outputs/connection_options/")
-        self.assertEqual(compressed, True)
+        self.assertTrue(compressed)
+
+    # TODO test additional_options
