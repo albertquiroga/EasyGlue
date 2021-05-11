@@ -1,14 +1,13 @@
 import unittest
 
-import easyglue
-
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 
+import easyglue
+from test.reader import ReaderTest
 
-class TestS3Read(unittest.TestCase):
 
-    glue = GlueContext(SparkContext.getOrCreate())
+class TestS3Read(ReaderTest):
 
     def test_process_s3_path(self):
         from easyglue.reader._S3Mixin import _process_s3_path

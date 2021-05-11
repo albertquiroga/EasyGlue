@@ -1,16 +1,19 @@
 import unittest
 
-import easyglue
-
 from pyspark.context import SparkContext
 from pyspark.sql.types import *
 from awsglue.context import GlueContext
 
+import easyglue
+from test.reader import ReaderTest
 
-class TestRDDRead(unittest.TestCase):
 
-    sc = SparkContext.getOrCreate()
-    glue = GlueContext(sc)
+class TestRDDRead(ReaderTest):
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        super(ReaderTest, cls).setUpClass()
+        cls.sc = cls.glue.sparkSession.sparkContext
 
     def test_rdd(self):
         data = [["Mark,", 1], ["Anne", 2], ["Carlos", 3], ["Ghada", 4], ["Mikhail", 5]]

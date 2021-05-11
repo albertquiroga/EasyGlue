@@ -1,13 +1,20 @@
 import unittest
 
-import easyglue
-
-from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 
+import easyglue
+from test import EasyGlueTest
 
-class TestEasyDynamicFrameReader(unittest.TestCase):
-    glue = GlueContext(SparkContext.getOrCreate())
+
+class ReaderTest(EasyGlueTest):
+    glue: GlueContext
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        super(ReaderTest, cls).setUpClass()
+
+
+class TestEasyDynamicFrameReader(EasyGlueTest):
 
     def test_format_option(self):
         data = self.glue.read().format_option("withHeader", True).csv("s3://bertolb/sampledata/mockaroo/csv/")

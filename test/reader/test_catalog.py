@@ -1,14 +1,12 @@
 import unittest
 
-import easyglue
-
-from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 
+import easyglue
+from test.reader import ReaderTest
 
-class TestCatalogRead(unittest.TestCase):
 
-    glue = GlueContext(SparkContext.getOrCreate())
+class TestCatalogRead(ReaderTest):
 
     def test_table(self):
         data = self.glue.read().table("sampledata.mockaroo_csv")

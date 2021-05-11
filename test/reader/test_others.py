@@ -1,14 +1,13 @@
 import unittest
 
-import easyglue
-
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 
+import easyglue
+from test.reader import ReaderTest
 
-class TestReadOthers(unittest.TestCase):
 
-    glue = GlueContext(SparkContext.getOrCreate())
+class TestReadOthers(ReaderTest):
 
     def test_dynamodb(self):
         data = self.glue.read().dynamodb("easyglue")
