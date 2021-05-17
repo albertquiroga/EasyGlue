@@ -3,9 +3,10 @@ from awsglue.dynamicframe import DynamicFrame
 
 from easyglue.writer._S3Mixin import S3Mixin
 from easyglue.writer._CatalogMixin import CatalogMixin
+from easyglue.writer._OthersMixin import OthersMixin
 
 
-class EasyDynamicFrameWriter(S3Mixin, CatalogMixin):
+class EasyDynamicFrameWriter(S3Mixin, CatalogMixin, OthersMixin):
     data_format = ""  # TODO implement this, with a save() method
     connection_options_dict = {}
     format_options_dict = {}

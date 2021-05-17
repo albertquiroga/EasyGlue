@@ -1,7 +1,5 @@
 import unittest
 
-from awsglue.context import GlueContext
-
 import easyglue
 from test.reader import ReaderTest
 

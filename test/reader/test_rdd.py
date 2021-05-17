@@ -1,8 +1,6 @@
 import unittest
 
-from pyspark.context import SparkContext
 from pyspark.sql.types import *
-from awsglue.context import GlueContext
 
 import easyglue
 from test.reader import ReaderTest

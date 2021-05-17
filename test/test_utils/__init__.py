@@ -1,6 +1,7 @@
 import boto3
 
 s3_client = boto3.client('s3', region_name="eu-west-1")
+ddb_client = boto3.client('dynamodb', region_name="eu-west-1")
 glue_client = boto3.client('glue', region_name="eu-west-1")
 
 

@@ -1,5 +1,3 @@
-from test.test_utils import glue_client
-
 DATABASE_NAME = "test"
 TABLE_NAME = "easyglue_test"
 TABLE_BUCKET = "bertolb"
@@ -165,26 +163,8 @@ table_def = {
     "TableType": "EXTERNAL_TABLE",
 }
 
-
-def create_sample_table():
-    delete_sample_table()
-    _create_table(DATABASE_NAME, table_def)
+# TODO probably move all these methods to the test_catalog.py file
 
 
-def delete_sample_table():
-    if _table_exists(DATABASE_NAME, TABLE_NAME):
-        _delete_table(DATABASE_NAME, TABLE_NAME)
 
 
-def _table_exists(database_name: str, table_name: str):
-    tables = glue_client.get_tables(DatabaseName=database_name).get('TableList', [])
-    table_names = list(map(lambda t: t['Name'], tables))
-    return table_name in table_names
-
-
-def _create_table(database_name: str, table_input: dict):
-    glue_client.create_table(DatabaseName=database_name, TableInput=table_input)
-
-
-def _delete_table(database_name: str, table_name: str):
-    glue_client.delete_table(DatabaseName=database_name, Name=table_name)
