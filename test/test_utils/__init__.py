@@ -1,8 +1,10 @@
+import json
 import boto3
 
 s3_client = boto3.client('s3', region_name="eu-west-1")
 ddb_client = boto3.client('dynamodb', region_name="eu-west-1")
 glue_client = boto3.client('glue', region_name="eu-west-1")
+secrets_client = boto3.client('secretsmanager', region_name="eu-west-1")
 
 
 def delete_all_s3_objects(bucket: str, prefix: str):
@@ -37,3 +39,14 @@ def list_all_objects(bucket_name: str, prefix: str) -> list:
             break
 
     return object_list
+
+
+def get_connection_options(secret: str, table_name: str) -> dict:
+    value = secrets_client.get_secret_value(SecretId=secret)
+    secret = json.loads(value.get('SecretString', {}))
+    return {
+        "url": f"jdbc:{secret.get('engine')}://{secret.get('host')}:{secret.get('port')}/{secret.get('dbname')}",
+        "dbtable": table_name,
+        "user": secret.get('username'),
+        "password": secret.get('password')
+    }
