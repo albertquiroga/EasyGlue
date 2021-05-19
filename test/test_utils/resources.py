@@ -162,9 +162,3 @@ table_def = {
     },
     "TableType": "EXTERNAL_TABLE",
 }
-
-# TODO probably move all these methods to the test_catalog.py file
-
-
-
-
