@@ -21,11 +21,12 @@ glue.read().json('s3://test_path/')
 
 The project currently supports:
 
-* Reading from S3 in any of the supported formats
-* Read from Data Catalog tables
-* Read from JDBC sources
-* Read from RDD
-* Read from DDB
+* Reading/writing from/to:
+    * S3, in any of the formats supported by Glue
+    * JDBC
+    * RDDs
+    * DynamoDB
+* Secrets Manager integration for JDBC read/writes
 
 ## Usage
 
@@ -60,6 +61,4 @@ This project uses [class extension methods](https://en.wikipedia.org/wiki/Extens
 
 ## Roadmap
 
-* Writes
-* Automatic transformation_ctx handling
-* Scala support
+Check the roadmap in GitHub [here](https://github.com/albertquiroga/EasyGlue/projects/1)
