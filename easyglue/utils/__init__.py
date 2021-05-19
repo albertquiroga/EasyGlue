@@ -1,4 +1,18 @@
+import json
 import re
+import requests
+
+import boto3
+
+AWS_METADATA_ENDPOINT = 'http://169.254.169.254/latest/dynamic/instance-identity/document'
+
+
+def get_current_region() -> str:
+    response = requests.get(AWS_METADATA_ENDPOINT)
+    return response.json().get('region')
+
+
+secrets_client = boto3.client('secretsmanager', region_name=get_current_region())
 
 
 def reader_method(func):
@@ -46,3 +60,14 @@ def validate_qualified_name(qualified_name: str) -> tuple:
     else:
         matches = re.findall(QUALIFIED_NAME_MATCH_CAPTURE, qualified_name)
         return matches[0], matches[1]
+
+
+def get_connection_options_from_secret(secret_id: str, table_name: str = None) -> dict:
+    value = secrets_client.get_secret_value(SecretId=secret_id)
+    secret = json.loads(value.get('SecretString', {}))
+    return {
+        "url": f"jdbc:{secret.get('engine')}://{secret.get('host')}:{secret.get('port')}/{secret.get('dbname')}",
+        "dbtable": table_name,
+        "user": secret.get('username'),
+        "password": secret.get('password')
+    }
