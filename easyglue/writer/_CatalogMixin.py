@@ -53,8 +53,7 @@ class CatalogMixin:
               catalog_id: int = None, **kwargs: Any):
         """
         Writes the DynamicFrame to catalog by invoking _write_to_catalog
-        :param database: Data catalog database to write to
-        :param table: Data catalog table to write to
+        :param qualified_name: Qualified name (database.table) of the Data Catalog table to write to
         :param redshift_tmp_dir: Redshift temporary path
         :param transformation_ctx: Glue transformation context
         :param catalog_id: Glue Data Catalog ID
