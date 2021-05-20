@@ -34,11 +34,4 @@ class OthersMixin:
         """
         self._write_to_ddb(table_name=table_name, transformation_ctx=transformation_ctx)
 
-    def ddb(self, table_name: str, transformation_ctx: str = ""):
-        """
-        Write a DynamoDB dataset by calling write_dynamic_frame_from_options with the right configuration
-        :param table_name: Name of the DynamoDB table
-        :param transformation_ctx: Glue transformation context
-        :return: None
-        """
-        self._write_to_ddb(table_name=table_name, transformation_ctx=transformation_ctx)
+    ddb = dynamodb
