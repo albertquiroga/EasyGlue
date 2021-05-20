@@ -37,7 +37,7 @@ class TestCatalog(WriterTest):
 
     @classmethod
     def tearDown(cls) -> None:
-        delete_all_s3_objects(TABLE_BUCKET, TABLE_PREFIX)  # TODO see if this can be replaced by purge_table
+        delete_all_s3_objects(TABLE_BUCKET, TABLE_PREFIX)
 
     @classmethod
     def setUpClass(cls) -> None:
