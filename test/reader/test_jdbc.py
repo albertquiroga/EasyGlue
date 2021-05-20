@@ -16,11 +16,11 @@ class TestJDBC(ReaderTest):
         cls.jdbc_options = get_connection_options_from_secret(SECRET_NAME, TABLE_NAME)
 
     def test_jdbc(self):
-        data = self.glue.read().jdbc(self.jdbc_options)
+        data = self.glue.read.jdbc(self.jdbc_options)
         self.assertEqual(1000, data.count())
 
     def test_secret(self):
-        data = self.glue.read().secret(table=TABLE_NAME, secret=SECRET_NAME)
+        data = self.glue.read.secret(table=TABLE_NAME, secret=SECRET_NAME)
         self.assertEqual(1000, data.count())
 
 

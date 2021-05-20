@@ -49,14 +49,14 @@ class TestCatalog(WriterTest):
         delete_sample_table()
 
     def test_catalog(self):
-        self.dataset.write().catalog(database=DATABASE_NAME, table=TABLE_NAME)
+        self.dataset.write.catalog(database=DATABASE_NAME, table=TABLE_NAME)
         data = self.glue.create_dynamic_frame. \
             from_catalog(database=DATABASE_NAME,
                          table_name=TABLE_NAME)
         self.assertEqual(1000, data.count())
 
     def test_table(self):
-        self.dataset.write().table(f"{DATABASE_NAME}.{TABLE_NAME}")
+        self.dataset.write.table(f"{DATABASE_NAME}.{TABLE_NAME}")
         data = self.glue.create_dynamic_frame. \
             from_catalog(database=DATABASE_NAME,
                          table_name=TABLE_NAME)

@@ -61,14 +61,14 @@ class TestOthers(WriterTest):
 
     @unittest.skip("DDB tests take very long to complete, only enable when necessary")
     def test_dynamodb(self):
-        self.dataset.write().dynamodb(table_name=DDB_TABLE_NAME)
+        self.dataset.write.dynamodb(table_name=DDB_TABLE_NAME)
         data = self.glue.create_dynamic_frame. \
             from_options(connection_type="dynamodb", connection_options={"dynamodb.input.tableName": DDB_TABLE_NAME})
         self.assertEqual(1000, data.count())
 
     @unittest.skip("DDB tests take very long to complete, only enable when necessary")
     def test_ddb(self):
-        self.dataset.write().ddb(table_name=DDB_TABLE_NAME)
+        self.dataset.write.ddb(table_name=DDB_TABLE_NAME)
         data = self.glue.create_dynamic_frame. \
             from_options(connection_type="dynamodb", connection_options={"dynamodb.input.tableName": DDB_TABLE_NAME})
         self.assertEqual(1000, data.count())

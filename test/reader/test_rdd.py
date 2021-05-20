@@ -21,7 +21,7 @@ class TestRDDRead(ReaderTest):
         fields = [StructField(field_name, StringType(), True) for field_name in schema_string.split()]
         schema = StructType(fields)
 
-        dyf = self.glue.read().rdd(rdd, "test_rdd", schema)
+        dyf = self.glue.read.rdd(rdd, "test_rdd", schema)
         self.assertEqual(5, dyf.count())
 
 
