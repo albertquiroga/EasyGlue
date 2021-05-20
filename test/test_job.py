@@ -9,7 +9,7 @@ def main():
     glue = GlueContext(SparkContext.getOrCreate())
 
     # Create a DynamicFrame using the 'persons_json' table
-    persons_dyf = glue.read().json("s3://bertolb/sampledata/mockaroo/json")
+    persons_dyf = glue.read.json("s3://bertolb/sampledata/mockaroo/json")
     # persons_dyf = glue.read().catalog("legislators", "persons_json")
     # persons_dyf = glueContext.create_dynamic_frame.from_catalog(database="legislators", table_name="persons_json")
 
