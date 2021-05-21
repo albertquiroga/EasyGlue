@@ -22,10 +22,11 @@ glue.read().json('s3://test_path/')
 The project currently supports:
 
 * Reading/writing from/to:
-    * S3, in any of the formats supported by Glue
+    * S3, in any of the file formats supported by Glue
     * JDBC
     * RDDs
     * DynamoDB
+    * DocumentDB and MongoDB
 * Secrets Manager integration for JDBC read/writes
 
 ## Usage
